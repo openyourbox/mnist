@@ -12,8 +12,18 @@ def draw():
 
     def callBack(event):
         try:
-            image[event.y - 20:event.y + 20, event.x - 20:event.x + 20] = image[event.y - 20:event.y + 20,
-                                                                          event.x - 20:event.x + 20] + 12
+            """
+            for i in range(40):
+                for j in range(40):
+                    if(i == 20 and j == 20):
+                        image[event.y, event.x] = 255
+                    else:
+                        image[event.y - 20 + j, event.x - 20 + i] = 255 / np.sqrt((20-j)*(20-j) + (20-i)*(20-i))
+            image[event.y - 10:event.y + 10, event.x - 10:event.x + 10] = 255
+            """
+            image[event.y - 10:event.y + 10, event.x - 10:event.x + 10] = image[event.y - 10:event.y + 10,
+                                                                          event.x - 10:event.x + 10] + 30
+
         except:
             pass
         canvas.create_oval(event.x - 20, event.y - 20, event.x + 20, event.y + 20, fill='black')
@@ -27,9 +37,11 @@ def draw():
 
 
     def displayClear(event):
+        image[image > 255] = 255
         for i in range(28):
             for j in range(28):
                 temp = image[i * 10: (i + 1) * 10, j * 10: (j + 1) * 10]
+                #small_image[i, j] = temp.sum() / temp.size
                 small_image[i, j] = temp.sum() / (temp[temp > 0].size if temp[temp > 0].size > 0 else 1)
         """
         fig = plt.figure()
@@ -38,7 +50,8 @@ def draw():
         plt.show()    
         # canvas.delete(ALL)
         """
-        im = small_image / small_image.max() * 255
+        #im = small_image / small_image.max() * 255
+        im = small_image
         print('im.size is :', im.size)
         #im.reshape((1, 784))
         file = open('draw.txt', 'w')
